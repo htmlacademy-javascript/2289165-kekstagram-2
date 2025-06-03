@@ -35,5 +35,35 @@ const getNumbers = (str) => {
 // console.log(getNumbers('а я томат')); //NaN
 // console.log(getNumbers(2023)); //2023
 // console.log(getNumbers(-1)); //1
-// console.log(getNumbers(1.5)); //15
+// console.log(getNumbers(1.5)); //15\
+
+const getArrayOfNumbersFromString = (str) => {
+  //string has separator ":"
+  return str.split(':').map((element) => +element);
+};
+const convertToMinutes = (hour, minutes) => hour * 60 + minutes;
+
+const isMeetingInThisWorkday = (workDayStartTime, workDayEndTime, meetingStartTime, meetingDuration) => {
+  const workDayStart = getArrayOfNumbersFromString(workDayStartTime);
+  const workDayEnd = getArrayOfNumbersFromString(workDayEndTime);
+  const meetingStart = getArrayOfNumbersFromString(meetingStartTime);
+
+  const workDayStartMinutes = convertToMinutes(workDayStart[0], workDayStart[1]);
+  const workDayEndMinutes = convertToMinutes(workDayEnd[0], workDayEnd[1]);
+  const meetingStartMinutes = convertToMinutes(meetingStart[0], meetingStart[1]);
+
+  if (workDayStartMinutes > meetingStartMinutes) {
+    return false;
+  } else if (workDayEndMinutes < meetingStartMinutes + meetingDuration) {
+    return false;
+  }
+  return true;
+};
+
+// console.log(isMeetingInThisWorkday('08:00', '17:30', '14:00', 90)); // true
+// console.log(isMeetingInThisWorkday('8:0', '10:0', '8:0', 120)); // true
+// console.log(isMeetingInThisWorkday('08:00', '14:30', '14:00', 90)); // false
+// console.log(isMeetingInThisWorkday('14:00', '17:30', '08:0', 90)); // false
+// console.log(isMeetingInThisWorkday('8:00', '17:30', '08:00', 900)); // false
+
 
