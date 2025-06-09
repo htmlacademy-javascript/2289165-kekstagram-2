@@ -51,4 +51,4 @@ const createPhotoSpecification = () => ({
 
 const similarPhotoSpecifications = Array.from({ length: SIMILAR_PHOTO_SPECIFICATION_COUNT }, createPhotoSpecification);
 
-export {similarPhotoSpecifications};
+export { similarPhotoSpecifications };

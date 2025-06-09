@@ -52,12 +52,7 @@ const isMeetingInThisWorkday = (workDayStartTime, workDayEndTime, meetingStartTi
   const workDayEndMinutes = convertToMinutes(workDayEnd[0], workDayEnd[1]);
   const meetingStartMinutes = convertToMinutes(meetingStart[0], meetingStart[1]);
 
-  if (workDayStartMinutes > meetingStartMinutes) {
-    return false;
-  } else if (workDayEndMinutes < meetingStartMinutes + meetingDuration) {
-    return false;
-  }
-  return true;
+  return (workDayStartMinutes <= meetingStartMinutes && workDayEndMinutes >= meetingStartMinutes + meetingDuration);
 };
 
 // console.log(isMeetingInThisWorkday('08:00', '17:30', '14:00', 90)); // true
