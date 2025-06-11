@@ -2,7 +2,7 @@ const container = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 
-function createThumbnail({ id, url, description, likes, comments }) {
+const createThumbnail = ({ id, url, description, likes, comments }) => {
   const thumbnail = pictureTemplate.cloneNode(true);
   const img = thumbnail.querySelector('.picture__img');
   img.src = url;
@@ -11,9 +11,9 @@ function createThumbnail({ id, url, description, likes, comments }) {
   thumbnail.querySelector('.picture__comments').textContent = comments.length;
   thumbnail.id = id;
   return thumbnail;
-}
+};
 
-function createPictures(pictureSpecification) {
+const createPictures = (pictureSpecification) => {
   const fragment = document.createDocumentFragment();
 
   pictureSpecification.forEach((specification) => {
@@ -21,6 +21,6 @@ function createPictures(pictureSpecification) {
   });
 
   container.appendChild(fragment);
-}
+};
 
 export { createPictures, container };
