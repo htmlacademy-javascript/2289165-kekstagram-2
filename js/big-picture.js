@@ -90,7 +90,9 @@ const increaseThumbnail = ({ id, url, likes, comments, description }) => {
 };
 
 const onContainerClick = (evt) => {
-  increaseThumbnail(getDataForPicture(evt.target.closest('a').id));
+  if (evt.target.className === 'picture__img') {
+    increaseThumbnail(getDataForPicture(evt.target.closest('a').id));
+  }
 };
 
 
