@@ -3,6 +3,7 @@ import { postData } from './api.js';
 import { showPopup } from './popups.js';
 import { isEscapeKey } from './utils.js';
 import { isValid, resetValidation } from './validation.js';
+import { resetEffects, resetScale } from './edit-picture.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -18,6 +19,8 @@ const closeUploadInput = () => {
   document.body.classList.remove('modal-open');
   uploadForm.reset();
   resetValidation();
+  resetScale();
+  resetEffects();
 };
 
 const onUploadCancelBtnClick = () => {

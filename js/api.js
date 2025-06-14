@@ -8,7 +8,7 @@ export const getData = () =>
     });
 
 export const postData = (body) =>
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram/2', {
+  fetch('https://31.javascript.htmlacademy.pro/kekstagram/', {
     method: 'POST',
     body
   });

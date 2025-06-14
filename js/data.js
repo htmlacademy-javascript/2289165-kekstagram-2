@@ -33,6 +33,7 @@ const USER_NAMES = [
   'Артур',
 ];
 
+
 const MAX_PHOTO_ID = 25;
 const MAX_COMMENT_ID = 4096;
 const MIN_LIKES = 15;
@@ -52,11 +53,69 @@ const TEMPLATES = {
   ERROR: 'error'
 };
 
+const EFFECTS = [
+  {
+    name: 'none',
+    style: 'none',
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: '',
+  },
+  {
+    name: 'chrome',
+    style: 'grayscale',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+  {
+    name: 'sepia',
+    style: 'sepia',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+  {
+    name: 'marvin',
+    style: 'invert',
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: '%',
+  },
+  {
+    name: 'phobos',
+    style: 'blur',
+    min: 0,
+    max: 3,
+    step: 0.1,
+    unit: 'px',
+  },
+  {
+    name: 'heat',
+    style: 'brightness',
+    min: 0,
+    max: 3,
+    step: 0.1,
+    unit: '',
+  },
+];
+
+const SCALE_STEP = 25;
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+const DEFAULT_SCALE = 100;
+const DEFAULT_EFFECT = EFFECTS[0];
+
 export {
   DESCRIPTIONS_PHOTO, MESSAGES, USER_NAMES, MAX_PHOTO_ID,
   MAX_COMMENT_ID, MIN_LIKES, MAX_LIKES, MAX_COMMENTS_NUMBER,
   MAX_COMMENTS_SHOWN_NUMBER, MAX_AVATAR_NUMBER,
   SIMILAR_PHOTO_SPECIFICATION_COUNT, MAX_COMMENT_LENGTH,
-  HASHTAG_FORMULA, HASHTAGS_COUNT, ALERT_SHOW_TIME, TEMPLATES
+  HASHTAG_FORMULA, HASHTAGS_COUNT, ALERT_SHOW_TIME, TEMPLATES,
+  EFFECTS, SCALE_STEP, MIN_SCALE, MAX_SCALE, DEFAULT_SCALE, DEFAULT_EFFECT
 };
 
