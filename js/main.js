@@ -1,8 +1,13 @@
-import {similarPhotoSpecifications} from './create-mocks.js';
 import { createPictures } from './create-pictures.js';
-import './big-picture.js';
 import './upload-form.js';
+import { showAlert } from './utils.js';
+import {getData} from './api.js';
 
-createPictures(similarPhotoSpecifications);
-
+getData()
+  .then((data) => {
+    createPictures(data);
+  })
+  .catch(() => {
+    showAlert();
+  });
 
