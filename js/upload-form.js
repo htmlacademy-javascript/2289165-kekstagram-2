@@ -1,3 +1,6 @@
+import { TEMPLATES } from './data.js';
+import { postData } from './api.js';
+import { showPopup } from './popups.js';
 import { isEscapeKey } from './utils.js';
 import { isValid, resetValidation } from './validation.js';
 
@@ -42,10 +45,25 @@ const blockSubmitBtn = (isBlocked = true) => {
   submitBtn.disabled = isBlocked;
 };
 
+
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (isValid()) {
     blockSubmitBtn();
+    postData(new FormData(uploadForm))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        closeUploadInput();
+        showPopup(TEMPLATES.SUCCESS);
+      })
+      .catch(() => {
+        showPopup(TEMPLATES.ERROR);
+      })
+      .finally(() => {
+        blockSubmitBtn(false);
+      });
   }
 });
 
