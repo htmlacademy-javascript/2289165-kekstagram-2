@@ -1,5 +1,9 @@
+import { TEMPLATES } from './data.js';
+import { postData } from './api.js';
+import { showPopup } from './popups.js';
 import { isEscapeKey } from './utils.js';
 import { isValid, resetValidation } from './validation.js';
+import { resetEffects, resetScale } from './edit-picture.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -15,6 +19,8 @@ const closeUploadInput = () => {
   document.body.classList.remove('modal-open');
   uploadForm.reset();
   resetValidation();
+  resetScale();
+  resetEffects();
 };
 
 const onUploadCancelBtnClick = () => {
@@ -42,10 +48,25 @@ const blockSubmitBtn = (isBlocked = true) => {
   submitBtn.disabled = isBlocked;
 };
 
+
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (isValid()) {
     blockSubmitBtn();
+    postData(new FormData(uploadForm))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
+        closeUploadInput();
+        showPopup(TEMPLATES.SUCCESS);
+      })
+      .catch(() => {
+        showPopup(TEMPLATES.ERROR);
+      })
+      .finally(() => {
+        blockSubmitBtn(false);
+      });
   }
 });
 
