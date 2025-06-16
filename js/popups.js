@@ -10,11 +10,12 @@ const templates = {
   [TEMPLATES.ERROR]: errorTemplate
 };
 
-const onPopupEscapeKeydown = (type, evt) => {
+const onPopupEscapeKeydown = (evt) => {
+  evt.stopPropagation();
   if (isEscapeKey) {
-    // evt.preventDefault();
-    const element = body.querySelector('.' + type);
+    const element = body.querySelector('.success') || body.querySelector('.error');
     element.remove();
+    body.removeEventListener('keydown', onPopupEscapeKeydown);
   }
 };
 
@@ -26,5 +27,5 @@ export const showPopup = (type) => {
       popup.remove();
     }
   });
-  document.addEventListener('keydown', () => onPopupEscapeKeydown(type));
+  body.addEventListener('keydown', onPopupEscapeKeydown);
 };

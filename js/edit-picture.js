@@ -3,7 +3,7 @@ import { SCALE_STEP, MIN_SCALE, MAX_SCALE, DEFAULT_SCALE, EFFECTS, DEFAULT_EFFEC
 const scaleButtonSmaller = document.querySelector('.scale__control--smaller');
 const scaleButtonBigger = document.querySelector('.scale__control--bigger');
 const scaleInputElement = document.querySelector('.scale__control--value');
-const imagePreview = document.querySelector('.img-upload__preview img');
+const photoPreview = document.querySelector('.img-upload__preview img');
 const effectsElement = document.querySelector('.effects');
 const sliderElement = document.querySelector('.effect-level__slider');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
@@ -11,7 +11,7 @@ const effectLevelValue = document.querySelector('.effect-level__value');
 let chosenEffect = DEFAULT_EFFECT;
 
 const scalePicture = (value) => {
-  imagePreview.style.transform = `scale(${value / 100})`;
+  photoPreview.style.transform = `scale(${value / 100})`;
   scaleInputElement.value = `${value}%`;
 };
 
@@ -75,16 +75,16 @@ const onEffectsChange = (evt) => {
     return;
   }
   chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
-  imagePreview.classList = `effects__preview--${chosenEffect.name}`;
+  photoPreview.classList = `effects__preview--${chosenEffect.name}`;
   updateSlider();
 };
 
 const onSliderUpdate = () => {
   const sliderValue = sliderElement.noUiSlider.get();
   if (isDefault()) {
-    imagePreview.style.filter = DEFAULT_EFFECT.style;
+    photoPreview.style.filter = DEFAULT_EFFECT.style;
   } else {
-    imagePreview.style.filter = `${chosenEffect.style}(${sliderValue + chosenEffect.unit})`;
+    photoPreview.style.filter = `${chosenEffect.style}(${sliderValue + chosenEffect.unit})`;
   }
   effectLevelValue.value = sliderValue;
 };
@@ -97,4 +97,4 @@ const resetEffects = () => {
   updateSlider();
 };
 
-export { resetScale, resetEffects };
+export { resetScale, resetEffects, photoPreview };

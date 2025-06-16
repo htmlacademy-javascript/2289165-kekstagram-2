@@ -1,9 +1,9 @@
-import { TEMPLATES } from './data.js';
+import { FILE_TYPES, TEMPLATES } from './data.js';
 import { postData } from './api.js';
 import { showPopup } from './popups.js';
 import { isEscapeKey } from './utils.js';
 import { isValid, resetValidation } from './validation.js';
-import { resetEffects, resetScale } from './edit-picture.js';
+import { photoPreview, resetEffects, resetScale } from './edit-picture.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -36,8 +36,13 @@ const onUploadFormEscKeydown = () => {
   }
 };
 
-
 uploadInput.addEventListener('change', () => {
+  const file = uploadInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    photoPreview.src = URL.createObjectURL(file);
+  }
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   uploadCancelBtn.addEventListener('click', onUploadCancelBtnClick);
@@ -47,7 +52,6 @@ uploadInput.addEventListener('change', () => {
 const blockSubmitBtn = (isBlocked = true) => {
   submitBtn.disabled = isBlocked;
 };
-
 
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
