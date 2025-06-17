@@ -1,13 +1,16 @@
 import { HASHTAG_FORMULA, HASHTAGS_COUNT, MAX_COMMENT_LENGTH } from './data.js';
 
+const errorParentElementClass = 'img-upload__field-wrapper';
+const errorTextClass = 'img-upload__field-wrapper--error';
+
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
 
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--error'
+  classTo: errorParentElementClass,
+  errorTextParent: errorParentElementClass,
+  errorTextClass: errorTextClass
 });
 
 const validateComment = (comment) => comment.length <= MAX_COMMENT_LENGTH;
@@ -17,7 +20,6 @@ pristine.addValidator(
   validateComment,
   `Комментарий не должен превышать ${MAX_COMMENT_LENGTH} символов`
 );
-
 
 const getHashtags = (value) => value.toLowerCase()
   .split(' ')
@@ -76,3 +78,6 @@ export const resetValidation = () => {
   pristine.reset();
 };
 
+export {
+  errorParentElementClass, errorTextClass
+};

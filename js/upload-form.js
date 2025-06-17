@@ -1,8 +1,8 @@
-import { FILE_TYPES, TEMPLATES } from './data.js';
+import { ALERT_SHOW_TIME, FILE_TYPES, MAX_COMMENT_LENGTH, TEMPLATES } from './data.js';
 import { postData } from './api.js';
 import { showPopup } from './popups.js';
 import { isEscapeKey } from './utils.js';
-import { isValid, resetValidation } from './validation.js';
+import { errorParentElementClass, errorTextClass, isValid, resetValidation } from './validation.js';
 import { photoPreview, resetEffects, resetScale } from './edit-picture.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -10,9 +10,22 @@ const uploadInput = uploadForm.querySelector('.img-upload__input');
 const uploadCancelBtn = uploadForm.querySelector('.img-upload__cancel');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const submitBtn = uploadForm.querySelector('.img-upload__submit');
+const errorParentElement = uploadForm.querySelector(`.${errorParentElementClass}`);
 
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
+
+const onCommentInputInput = (evt) => {
+  if (evt.target.value.length === MAX_COMMENT_LENGTH) {
+    const errorText = document.createElement('div');
+    errorText.classList.add(errorTextClass);
+    errorText.textContent = `Комментарий не должен превышать ${MAX_COMMENT_LENGTH} символов`;
+    errorParentElement.appendChild(errorText);
+    setTimeout(() => {
+      errorText.remove();
+    }, ALERT_SHOW_TIME);
+  }
+};
 
 const closeUploadInput = () => {
   uploadOverlay.classList.add('hidden');
@@ -21,6 +34,7 @@ const closeUploadInput = () => {
   resetValidation();
   resetScale();
   resetEffects();
+  commentInput.removeEventListener('input', onCommentInputInput);
 };
 
 const onUploadCancelBtnClick = () => {
@@ -37,6 +51,7 @@ const onUploadFormEscKeydown = (evt) => {
   }
 };
 
+
 uploadInput.addEventListener('change', () => {
   const file = uploadInput.files[0];
   const fileName = file.name.toLowerCase();
@@ -48,6 +63,7 @@ uploadInput.addEventListener('change', () => {
   document.body.classList.add('modal-open');
   uploadCancelBtn.addEventListener('click', onUploadCancelBtnClick);
   document.addEventListener('keydown', onUploadFormEscKeydown);
+  commentInput.addEventListener('input', onCommentInputInput);
 });
 
 const blockSubmitBtn = (isBlocked = true) => {
