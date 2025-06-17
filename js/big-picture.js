@@ -29,7 +29,7 @@ const toggleBigPicture = (isOpened = true) => {
 };
 
 const onBigPictureEscKeydown = (evt) => {
-  if (isEscapeKey) {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
     toggleBigPicture(false);
     document.removeEventListener('keydown', onBigPictureEscKeydown);
@@ -38,7 +38,7 @@ const onBigPictureEscKeydown = (evt) => {
 
 const onCloseBtnClick = () => toggleBigPicture(false);
 
-const createOneComment = ({message, avatar, name}) => {
+const createOneComment = ({ message, avatar, name }) => {
   const oneComment = oneCommentType.cloneNode(true);
   oneComment.querySelector('.social__text').textContent = message;
   oneComment.querySelector('.social__picture').src = avatar;

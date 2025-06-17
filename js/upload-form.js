@@ -28,9 +28,10 @@ const onUploadCancelBtnClick = () => {
   uploadCancelBtn.removeEventListener('click', onUploadCancelBtnClick);
 };
 
-const onUploadFormEscKeydown = () => {
+const onUploadFormEscKeydown = (evt) => {
   const isTextFieldOnFocus = document.activeElement === commentInput || document.activeElement === hashtagInput;
-  if (isEscapeKey && !isTextFieldOnFocus) {
+  if (isEscapeKey(evt) && !isTextFieldOnFocus) {
+    evt.preventDefault();
     closeUploadInput();
     document.removeEventListener('keydown', onUploadFormEscKeydown);
   }

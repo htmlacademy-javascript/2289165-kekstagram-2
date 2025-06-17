@@ -12,7 +12,7 @@ const templates = {
 
 const onPopupEscapeKeydown = (evt) => {
   evt.stopPropagation();
-  if (isEscapeKey) {
+  if (isEscapeKey(evt)) {
     const element = body.querySelector('.success') || body.querySelector('.error');
     element.remove();
     body.removeEventListener('keydown', onPopupEscapeKeydown);
