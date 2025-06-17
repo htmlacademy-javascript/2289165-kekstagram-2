@@ -10,7 +10,7 @@ const uploadInput = uploadForm.querySelector('.img-upload__input');
 const uploadCancelBtn = uploadForm.querySelector('.img-upload__cancel');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const submitBtn = uploadForm.querySelector('.img-upload__submit');
-const errorParentElement = uploadForm.querySelector(`.${errorParentElementClass}`);
+const errorParentElementForCommentValidation = uploadForm.querySelectorAll(`.${errorParentElementClass}`)[1];
 const photoPreviewsWithEffect = document.querySelectorAll('.effects__preview');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
@@ -19,8 +19,10 @@ const onCommentInputInput = (evt) => {
   if (evt.target.value.length === MAX_COMMENT_LENGTH) {
     const errorText = document.createElement('div');
     errorText.classList.add(errorTextClass);
-    errorText.textContent = `Комментарий не должен превышать ${MAX_COMMENT_LENGTH} символов`;
-    errorParentElement.appendChild(errorText);
+    errorText.style.backgroundColor = '#FFA500';
+    errorText.style.zIndex = 1;
+    errorText.textContent = `Максимум ${MAX_COMMENT_LENGTH} символов`;
+    errorParentElementForCommentValidation.appendChild(errorText);
     setTimeout(() => {
       errorText.remove();
     }, ALERT_SHOW_TIME);
