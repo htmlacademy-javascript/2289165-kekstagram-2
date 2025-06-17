@@ -1,8 +1,8 @@
-import { FILE_TYPES, TEMPLATES } from './data.js';
+import { ALERT_SHOW_TIME, FILE_TYPES, MAX_COMMENT_LENGTH, TEMPLATES } from './data.js';
 import { postData } from './api.js';
 import { showPopup } from './popups.js';
 import { isEscapeKey } from './utils.js';
-import { isValid, resetValidation } from './validation.js';
+import { errorParentElementClass, errorTextClass, isValid, resetValidation } from './validation.js';
 import { photoPreview, resetEffects, resetScale } from './edit-picture.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -10,9 +10,24 @@ const uploadInput = uploadForm.querySelector('.img-upload__input');
 const uploadCancelBtn = uploadForm.querySelector('.img-upload__cancel');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const submitBtn = uploadForm.querySelector('.img-upload__submit');
-
+const errorParentElementForCommentValidation = uploadForm.querySelectorAll(`.${errorParentElementClass}`)[1];
+const photoPreviewsWithEffect = document.querySelectorAll('.effects__preview');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
+
+const onCommentInputInput = (evt) => {
+  if (evt.target.value.length === MAX_COMMENT_LENGTH) {
+    const errorText = document.createElement('div');
+    errorText.classList.add(errorTextClass);
+    errorText.style.backgroundColor = '#FFA500';
+    errorText.style.zIndex = 1;
+    errorText.textContent = `Максимум ${MAX_COMMENT_LENGTH} символов`;
+    errorParentElementForCommentValidation.appendChild(errorText);
+    setTimeout(() => {
+      errorText.remove();
+    }, ALERT_SHOW_TIME);
+  }
+};
 
 const closeUploadInput = () => {
   uploadOverlay.classList.add('hidden');
@@ -21,6 +36,7 @@ const closeUploadInput = () => {
   resetValidation();
   resetScale();
   resetEffects();
+  commentInput.removeEventListener('input', onCommentInputInput);
 };
 
 const onUploadCancelBtnClick = () => {
@@ -28,25 +44,32 @@ const onUploadCancelBtnClick = () => {
   uploadCancelBtn.removeEventListener('click', onUploadCancelBtnClick);
 };
 
-const onUploadFormEscKeydown = () => {
+const onUploadFormEscKeydown = (evt) => {
   const isTextFieldOnFocus = document.activeElement === commentInput || document.activeElement === hashtagInput;
-  if (isEscapeKey && !isTextFieldOnFocus) {
+  if (isEscapeKey(evt) && !isTextFieldOnFocus) {
+    evt.preventDefault();
     closeUploadInput();
     document.removeEventListener('keydown', onUploadFormEscKeydown);
   }
 };
+
 
 uploadInput.addEventListener('change', () => {
   const file = uploadInput.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
-    photoPreview.src = URL.createObjectURL(file);
+    const urlPhoto = URL.createObjectURL(file);
+    photoPreview.src = urlPhoto;
+    photoPreviewsWithEffect.forEach((photoPreviewWithEffect) => {
+      photoPreviewWithEffect.style.backgroundImage = `url(${urlPhoto})`;
+    });
   }
   uploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   uploadCancelBtn.addEventListener('click', onUploadCancelBtnClick);
   document.addEventListener('keydown', onUploadFormEscKeydown);
+  commentInput.addEventListener('input', onCommentInputInput);
 });
 
 const blockSubmitBtn = (isBlocked = true) => {

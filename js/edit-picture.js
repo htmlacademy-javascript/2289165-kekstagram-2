@@ -49,6 +49,14 @@ noUiSlider.create(sliderElement, {
   start: DEFAULT_EFFECT.max,
   step: DEFAULT_EFFECT.step,
   connect: 'lower',
+  format: {
+    to: function (value) {
+      return value;
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
 });
 
 hideSlider();
@@ -86,6 +94,7 @@ const onSliderUpdate = () => {
   } else {
     photoPreview.style.filter = `${chosenEffect.style}(${sliderValue + chosenEffect.unit})`;
   }
+
   effectLevelValue.value = sliderValue;
 };
 
